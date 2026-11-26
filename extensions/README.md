@@ -16,12 +16,20 @@ LaveroAdmin features a rich, plug-and-play extension ecosystem. Extensions allow
 | **Activity Log** | `laveroadmin/activity-log` | Audit trail and user action history powered by Spatie Activitylog | [Read docs](activity-log.md) |
 | **Translations** | `laveroadmin/translations` | Dual-column editor for PHP and JSON localization files | [Read docs](translations.md) |
 | **Media Manager** | `laveroadmin/media-manager` | File explorer and media manager for storage disks | [Read docs](media-manager.md) |
-| **Config Manager** | `laveroadmin/config` | Dynamic key-value configuration manager stored in database | [Read docs](config.md) |
+| **Config Manager** | `laveroadmin/config` | Dynamic settings form builder and key-value configuration manager stored in database | [Read docs](config.md) |
 | **Scheduling** | `laveroadmin/scheduling` | Crontab and scheduled tasks manager and inspector | [Read docs](scheduling.md) |
 | **Reporter** | `laveroadmin/reporter` | Exception tracker and error reporter | [Read docs](reporter.md) |
 | **WAFU Firewall** | `laveroadmin/wafu` | Web application firewall rules, IP blocklists, and threat logging | [Read docs](wafu.md) |
 | **Grid Sortable** | `laveroadmin/grid-sortable` | Drag & drop sorting for Model-Grid rows | [Read docs](grid-sortable.md) |
 | **CKEditor** | `laveroadmin/ckeditor` | CKEditor 5 WYSIWYG editor integration for Model-Form | [Read docs](ckeditor.md) |
+| **SEO & Redirects** | `laveroadmin/seo` | 301/302/410 redirects manager with hit tracking, `robots.txt` editor, and global SEO meta tags | [Read docs](seo.md) |
+| **Site Menus** | `laveroadmin/menus` | Public site navigation menus builder with drag-and-drop hierarchy and permanent caching | [Read docs](menus.md) |
+| **Notifications** | `laveroadmin/notifications` | Alerts to Telegram, Webhook, or Email on WAFU blocks, exceptions, backups, and custom events | [Read docs](notifications.md) |
+| **Cache Manager** | `laveroadmin/cache-manager` | Clear/warm Laravel caches, flush OPcache, and run `storage:link` without SSH | [Read docs](cache-manager.md) |
+| **Forms & Leads** | `laveroadmin/forms` | Public contact/lead form builder and submissions inbox with statuses and notes | [Read docs](forms.md) |
+| **Mail Log** | `laveroadmin/mail-log` | Outgoing Laravel emails logger and previewer with sensitive token redaction | [Read docs](mail-log.md) |
+| **Sessions & Audit** | `laveroadmin/sessions` | Active admin sessions viewer, remote revocation, and login history audit | [Read docs](sessions.md) |
+| **TipTap Editor** | `laveroadmin/tiptap` | Modern headless TipTap WYSIWYG editor field for Model-Form | [Read docs](tiptap.md) |
 
 ---
 

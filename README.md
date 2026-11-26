@@ -8,8 +8,8 @@
 
 * **Pure Vanilla JavaScript & Bootstrap 5:** Built completely without jQuery for modern browser standards and high performance.
 * **Full CRUD Generation:** Intuitive `Model-Grid`, `Model-Form`, and `Model-Show` APIs for Eloquent models.
-* **Modern Developer Experience:** Built-in Dark Mode, Command Palette (`Ctrl+K`), Two-Factor Authentication (2FA TOTP), and PhpSpreadsheet data export.
-* **Rich Extension Ecosystem:** Media Manager, Log Viewer, Backup, Queue Manager, Activity Log, Translations, WAFU Firewall, Scheduling, and more.
+* **Modern Developer Experience:** Built-in Dark Mode, Two-Factor Authentication (2FA TOTP), AJAX/PJAX navigation, and PhpSpreadsheet data export.
+* **Rich Extension Ecosystem:** 22 official extensions — Media Manager, Log Viewer, Backup, Queue Manager, Activity Log, Translations, WAFU Firewall, Scheduling, SEO & Redirects, Site Menus, Forms & Leads, Notifications, Cache Manager, TipTap, and more.
 
 ---
 
