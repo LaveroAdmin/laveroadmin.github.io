@@ -6,22 +6,25 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <meta name="description" content="Official Documentation for LaveroAdmin - Modern, beautiful and flexible administration panel builder for Laravel.">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-  
-  <!-- Modern Google Fonts: Inter for UI & JetBrains Mono for Code -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230f172a'/%3E%3Cpath d='M10 8h4v12h8v4H10V8z' fill='%23bef264'/%3E%3C/svg%3E">
+
+  <!-- Google Fonts: Inter & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
   <!-- Base Docsify Theme -->
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css" title="vue">
-  
+
   <style>
-    [data-theme="light"],
     :root {
-      --theme-color: #0f172a;
-      --brand-primary: #2563eb;
-      --brand-primary-hover: #1d4ed8;
-      --brand-primary-light: #eff6ff;
+      --theme-color: #65a30d;
+      --brand-primary: #84cc16;
+      --brand-accent: #bef264;
+      --brand-accent-hover: #a3e635;
+      --brand-accent-light: rgba(190, 242, 100, 0.24);
+      --link-color: #0284c7;
+      --link-hover: #0369a1;
       --text-primary: #0f172a;
       --text-secondary: #334155;
       --text-muted: #64748b;
@@ -30,18 +33,16 @@
       --border-color: #e2e8f0;
       --border-light: #f1f5f9;
       --code-bg: #0f172a;
-      --code-header-bg: #1e293b;
       --code-inline-bg: #f1f5f9;
       --code-inline-color: #0f172a;
       --code-inline-border: #e2e8f0;
-      --docsifytabs-border-color: #e2e8f0;
-      --docsifytabs-tab-highlight-color: #2563eb;
       --table-header-bg: #f8fafc;
       --table-row-hover: #f8fafc;
-      --nav-bg: rgba(255, 255, 255, 0.92);
+      --nav-bg: rgba(255, 255, 255, 0.94);
       --nav-hover: #f1f5f9;
       --card-bg: #ffffff;
       --card-shadow: rgba(15, 23, 42, 0.05);
+      --sidebar-width: 295px;
     }
 
     * {
@@ -56,16 +57,29 @@
       background-color: var(--bg-main);
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
-      transition: background-color 0.2s ease, color 0.2s ease;
     }
 
-    /* ---------------- Sidebar Styling ---------------- */
+    /* ---------------- Fixed Collapsible Sidebar ---------------- */
     .sidebar {
+      position: fixed !important;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: var(--sidebar-width);
       background-color: var(--bg-sidebar);
       border-right: 1px solid var(--border-color);
-      width: 295px;
-      padding: 24px 0 30px;
-      transition: background-color 0.2s ease, border-color 0.2s ease;
+      padding: 20px 0 32px;
+      overflow-y: auto;
+      z-index: 20;
+      transition: transform 0.25s ease-out;
+    }
+
+    body.close .sidebar {
+      transform: translateX(calc(-1 * var(--sidebar-width)));
+    }
+
+    body.close .content {
+      left: 0;
     }
 
     .sidebar > h1 {
@@ -84,18 +98,23 @@
     }
 
     .app-name-link::before {
-      content: "";
-      display: inline-block;
-      width: 26px;
-      height: 26px;
-      background: linear-gradient(135deg, #2563eb, #3b82f6);
-      border-radius: 7px;
-      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.35);
+      content: "L";
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      background: #0f172a;
+      color: #bef264;
+      font-size: 15px;
+      font-weight: 800;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.18);
       flex-shrink: 0;
     }
 
     .sidebar .search {
-      margin-bottom: 20px;
+      margin-bottom: 14px;
       padding: 0 16px;
       border-bottom: none;
     }
@@ -104,17 +123,16 @@
       border: 1px solid var(--border-color);
       border-radius: 8px;
       background-color: var(--bg-main);
-      padding: 9px 12px 9px 34px;
+      padding: 8px 12px 8px 34px;
       font-size: 13.5px;
       color: var(--text-primary);
       width: 100%;
-      transition: all 0.2s ease;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
     }
 
     .sidebar .search input:focus {
-      border-color: #3b82f6;
-      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+      border-color: var(--brand-primary);
+      box-shadow: 0 0 0 3px rgba(190, 242, 100, 0.35);
       outline: none;
     }
 
@@ -129,72 +147,112 @@
     }
 
     .sidebar-nav > ul > li {
-      margin: 1.25rem 0 0.35rem 0;
+      margin: 0.35rem 0;
     }
 
-    .sidebar-nav > ul > li:first-child {
-      margin-top: 0.5rem;
+    .sidebar-nav > ul > li > a,
+    .sidebar-nav > ul > li > p {
+      margin: 0;
     }
 
-    .sidebar-nav > ul > li > a {
+    /* Group header styling */
+    .sidebar-nav li.sidebar-group > a,
+    .sidebar-nav li.sidebar-group > p {
       font-weight: 700;
       font-size: 11.5px;
       text-transform: uppercase;
       letter-spacing: 0.05em;
       color: var(--text-muted);
-      padding: 4px 10px;
-      display: block;
-      cursor: default;
+      padding: 8px 10px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      user-select: none;
+      transition: background-color 0.15s ease, color 0.15s ease;
     }
 
-    .sidebar-nav ul li ul {
+    .sidebar-nav li.sidebar-group > a:hover,
+    .sidebar-nav li.sidebar-group > p:hover {
+      background-color: var(--nav-hover);
+      color: var(--text-primary);
+    }
+
+    .sidebar-nav li.sidebar-group > a::after,
+    .sidebar-nav li.sidebar-group > p::after {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-right: 1.75px solid currentColor;
+      border-bottom: 1.75px solid currentColor;
+      transform: rotate(-45deg);
+      transition: transform 0.18s ease;
+      margin-right: 4px;
+      flex-shrink: 0;
+    }
+
+    .sidebar-nav li.sidebar-group.open > a,
+    .sidebar-nav li.sidebar-group.open > p {
+      color: var(--text-primary);
+    }
+
+    .sidebar-nav li.sidebar-group.open > a::after,
+    .sidebar-nav li.sidebar-group.open > p::after {
+      transform: rotate(45deg);
+    }
+
+    .sidebar-nav li.sidebar-group > ul {
+      display: none;
       padding-left: 0;
-      margin: 4px 0 0;
+      margin: 2px 0 8px 10px;
+      border-left: 1px dashed #cbd5e1;
+      padding-left: 8px;
     }
 
-    .sidebar-nav ul li ul li {
-      margin: 1px 0;
+    .sidebar-nav li.sidebar-group.open > ul {
+      display: block;
     }
 
-    .sidebar-nav ul li ul li a {
+    .sidebar-nav ul li a {
       font-size: 13.5px;
       font-weight: 400;
       color: var(--text-secondary);
-      padding: 6px 12px;
+      padding: 5px 10px;
       border-radius: 6px;
       display: block;
       text-decoration: none;
       transition: all 0.15s ease;
     }
 
-    .sidebar-nav ul li ul li a:hover {
+    .sidebar-nav ul li a:hover {
       background-color: var(--nav-hover);
       color: var(--text-primary);
     }
 
     .sidebar-nav ul li.active > a {
-      background-color: var(--brand-primary-light) !important;
-      color: var(--brand-primary) !important;
+      background-color: var(--brand-accent-light) !important;
+      color: var(--text-primary) !important;
       font-weight: 600;
       border-right: none !important;
       border-left: 3px solid var(--brand-primary);
       border-radius: 0 6px 6px 0;
-      padding-left: 9px;
+      padding-left: 8px;
     }
 
     /* ---------------- Main Content Styling ---------------- */
     .content {
-      padding-top: 50px;
-      left: 295px;
+      padding-top: 56px;
+      left: var(--sidebar-width);
+      transition: left 0.25s ease-out;
     }
 
     .markdown-section {
-      max-width: 860px;
+      max-width: 880px;
       margin: 0 auto;
       padding: 20px 45px 80px 45px;
     }
 
-    /* Typography */
     .markdown-section h1 {
       font-size: 2.1rem;
       font-weight: 800;
@@ -232,20 +290,20 @@
     .markdown-section p,
     .markdown-section ul,
     .markdown-section ol {
-      margin: 1.15rem 0;
+      margin: 1.1rem 0;
       line-height: 1.75;
       color: var(--text-secondary);
     }
 
     .markdown-section a {
-      color: var(--brand-primary);
+      color: var(--link-color);
       text-decoration: none;
       font-weight: 500;
       transition: color 0.15s ease;
     }
 
     .markdown-section a:hover {
-      color: var(--brand-primary-hover);
+      color: var(--link-hover);
       text-decoration: underline;
     }
 
@@ -260,7 +318,6 @@
       margin: 2.5rem 0;
     }
 
-    /* Lists */
     .markdown-section ul,
     .markdown-section ol {
       padding-left: 1.5rem;
@@ -305,8 +362,8 @@
       height: 32px;
       line-height: 32px;
       padding: 0 14px;
-      background: rgba(30, 41, 59, 0.75);
-      border-bottom: 1px solid rgba(51, 65, 85, 0.65);
+      background: rgba(30, 41, 59, 0.8);
+      border-bottom: 1px solid rgba(51, 65, 85, 0.7);
       border-radius: 10px 10px 0 0;
       color: #94a3b8;
       font-family: 'JetBrains Mono', monospace;
@@ -334,70 +391,43 @@
       color: #64748b;
       font-style: italic;
     }
-
-    .token.punctuation {
-      color: #94a3b8;
-    }
-
+    .token.punctuation { color: #94a3b8; }
     .token.property,
     .token.tag,
     .token.boolean,
     .token.number,
     .token.constant,
     .token.symbol,
-    .token.deleted {
-      color: #f472b6;
-    }
-
+    .token.deleted { color: #f472b6; }
     .token.selector,
     .token.attr-name,
     .token.string,
     .token.char,
     .token.builtin,
-    .token.inserted {
-      color: #a3e635;
-    }
-
+    .token.inserted { color: #bef264; }
     .token.operator,
     .token.entity,
     .token.url,
     .language-css .token.string,
-    .style .token.string {
-      color: #38bdf8;
-    }
-
+    .style .token.string { color: #38bdf8; }
     .token.atrule,
     .token.attr-value,
-    .token.keyword {
-      color: #c084fc;
-    }
-
+    .token.keyword { color: #c084fc; }
     .token.function,
-    .token.class-name {
-      color: #60a5fa;
-    }
-
-    .token.variable {
-      color: #fbbf24;
-    }
-
+    .token.class-name { color: #60a5fa; }
+    .token.variable { color: #fbbf24; }
     .token.regex,
-    .token.important {
-      color: #fb923c;
-    }
-
+    .token.important { color: #fb923c; }
     .token.important,
-    .token.bold {
-      font-weight: 600;
-    }
+    .token.bold { font-weight: 600; }
 
     /* Docsify Copy Code Button */
     .docsify-copy-code-button {
       top: 4px !important;
       right: 8px !important;
-      background: rgba(51, 65, 85, 0.7) !important;
+      background: rgba(51, 65, 85, 0.75) !important;
       color: #cbd5e1 !important;
-      border: 1px solid rgba(71, 85, 105, 0.8) !important;
+      border: 1px solid rgba(71, 85, 105, 0.85) !important;
       border-radius: 6px !important;
       font-size: 11px !important;
       padding: 3px 9px !important;
@@ -408,9 +438,9 @@
     }
 
     .docsify-copy-code-button:hover {
-      background: #334155 !important;
-      color: #ffffff !important;
-      border-color: #64748b !important;
+      background: #bef264 !important;
+      color: #0f172a !important;
+      border-color: #84cc16 !important;
     }
 
     /* Scrollbars */
@@ -448,18 +478,12 @@
       color: var(--text-primary);
       padding: 11px 16px;
       border-bottom: 1px solid var(--border-color);
-      border-top: none;
-      border-left: none;
-      border-right: none;
       text-align: left;
     }
 
     .markdown-section table td {
       padding: 11px 16px;
       border-bottom: 1px solid var(--border-light);
-      border-top: none;
-      border-left: none;
-      border-right: none;
       font-size: 14px;
       color: var(--text-secondary);
     }
@@ -472,7 +496,7 @@
       background-color: var(--table-row-hover);
     }
 
-    /* Blockquotes / GitHub-style Alerts */
+    /* Blockquotes & Alerts */
     .markdown-section blockquote {
       background: var(--bg-sidebar);
       border-left: 4px solid var(--brand-primary);
@@ -491,7 +515,6 @@
       line-height: 1.65;
     }
 
-    /* GitHub-style Callout Alerts */
     .markdown-alert {
       border-radius: 8px;
       border-left: 4px solid;
@@ -526,43 +549,19 @@
       line-height: 1.65;
     }
 
-    .markdown-alert .markdown-alert-content p:first-child {
-      margin-top: 0;
-    }
+    .markdown-alert .markdown-alert-content p:first-child { margin-top: 0; }
+    .markdown-alert .markdown-alert-content p:last-child { margin-bottom: 0; }
 
-    .markdown-alert .markdown-alert-content p:last-child {
-      margin-bottom: 0;
-    }
-
-    .markdown-alert-note {
-      border-left-color: #2563eb;
-      background: rgba(37, 99, 235, 0.05);
-    }
-    .markdown-alert-note .markdown-alert-title { color: #2563eb; }
-
-    .markdown-alert-tip {
-      border-left-color: #10b981;
-      background: rgba(16, 185, 129, 0.05);
-    }
-    .markdown-alert-tip .markdown-alert-title { color: #10b981; }
-
-    .markdown-alert-important {
-      border-left-color: #8b5cf6;
-      background: rgba(139, 92, 246, 0.05);
-    }
-    .markdown-alert-important .markdown-alert-title { color: #8b5cf6; }
-
-    .markdown-alert-warning {
-      border-left-color: #f59e0b;
-      background: rgba(245, 158, 11, 0.05);
-    }
-    .markdown-alert-warning .markdown-alert-title { color: #d97706; }
-
-    .markdown-alert-caution {
-      border-left-color: #ef4444;
-      background: rgba(239, 68, 68, 0.05);
-    }
-    .markdown-alert-caution .markdown-alert-title { color: #ef4444; }
+    .markdown-alert-note { border-left-color: #0284c7; background: rgba(2, 132, 199, 0.05); }
+    .markdown-alert-note .markdown-alert-title { color: #0284c7; }
+    .markdown-alert-tip { border-left-color: #65a30d; background: rgba(190, 242, 100, 0.16); }
+    .markdown-alert-tip .markdown-alert-title { color: #4d7c0f; }
+    .markdown-alert-important { border-left-color: #7c3aed; background: rgba(124, 58, 237, 0.05); }
+    .markdown-alert-important .markdown-alert-title { color: #7c3aed; }
+    .markdown-alert-warning { border-left-color: #d97706; background: rgba(245, 158, 11, 0.06); }
+    .markdown-alert-warning .markdown-alert-title { color: #b45309; }
+    .markdown-alert-caution { border-left-color: #dc2626; background: rgba(220, 38, 38, 0.05); }
+    .markdown-alert-caution .markdown-alert-title { color: #dc2626; }
 
     /* Images */
     .markdown-section img {
@@ -590,7 +589,7 @@
     .app-nav ul {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 4px;
       list-style: none;
       padding: 4px;
       background: var(--nav-bg);
@@ -600,10 +599,7 @@
       margin: 0;
     }
 
-    .app-nav li {
-      margin: 0;
-      padding: 0;
-    }
+    .app-nav li { margin: 0; padding: 0; }
 
     .app-nav a {
       display: inline-block;
@@ -617,17 +613,17 @@
     }
 
     .app-nav a:hover {
-      background: var(--nav-hover);
+      background: var(--brand-accent-light);
       color: var(--text-primary);
     }
 
     /* ---------------- Coverpage Styling ---------------- */
     section.cover {
-      background: radial-gradient(circle at top, var(--bg-main) 0%, var(--bg-sidebar) 100%) !important;
+      background: radial-gradient(circle at top, #ffffff 0%, #f8fafc 100%) !important;
     }
 
     section.cover .cover-main {
-      max-width: 700px;
+      max-width: 720px;
       margin: 0 auto;
     }
 
@@ -640,14 +636,14 @@
     }
 
     section.cover h1 small {
-      font-size: 1rem;
-      background: var(--brand-primary-light);
-      color: var(--brand-primary);
-      padding: 4px 10px;
+      font-size: 0.95rem;
+      background: var(--brand-accent);
+      color: var(--text-primary);
+      padding: 4px 12px;
       border-radius: 20px;
-      font-weight: 600;
+      font-weight: 700;
       vertical-align: middle;
-      border: 1px solid var(--border-color);
+      border: 1px solid var(--brand-primary);
     }
 
     section.cover blockquote {
@@ -693,16 +689,14 @@
     }
 
     section.cover p a:last-of-type {
-      background: var(--text-primary);
-      color: var(--bg-main);
-      border: 1px solid var(--text-primary);
-      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
+      background: var(--brand-accent);
+      color: var(--text-primary);
+      border: 1px solid var(--brand-primary);
+      box-shadow: 0 4px 12px rgba(132, 204, 22, 0.25);
     }
 
     section.cover p a:last-of-type:hover {
-      background: var(--brand-primary);
-      border-color: var(--brand-primary);
-      color: #ffffff;
+      background: var(--brand-accent-hover);
       transform: translateY(-1px);
     }
 
@@ -723,7 +717,7 @@
     }
 
     .pagination-item-title {
-      color: var(--brand-primary) !important;
+      color: var(--text-primary) !important;
       font-weight: 600;
     }
 
@@ -735,20 +729,22 @@
       font-weight: 600;
     }
 
-    /* ---------------- Mobile Responsive Fixes ---------------- */
+    /* ---------------- Mobile Responsive ---------------- */
     @media (max-width: 768px) {
       .app-nav {
-        top: 12px;
-        right: 15px;
-      }
-      .app-nav ul {
-        display: none; /* Hide wide navbar links on small screens to prevent overlap with hamburger */
+        display: none;
       }
       .markdown-section {
         padding: 20px 20px 60px 20px;
       }
       .content {
         left: 0;
+      }
+      .sidebar {
+        transform: translateX(calc(-1 * var(--sidebar-width)));
+      }
+      body.close .sidebar {
+        transform: translateX(0);
       }
       .sidebar-toggle {
         top: 10px;
@@ -762,8 +758,7 @@
   <div id="app">Loading documentation...</div>
 
   <script>
-    // Custom Docsify plugin for GitHub-style Alerts
-    function alertPlugin(hook, vm) {
+    function alertPlugin(hook) {
       var alertTypes = {
         'NOTE': {
           icon: '<svg viewBox="0 0 16 16" fill="currentColor"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2.5a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"/></svg>',
@@ -800,11 +795,79 @@
       });
     }
 
+    function sidebarAccordionPlugin(hook) {
+      hook.doneEach(function() {
+        var topItems = document.querySelectorAll('.sidebar-nav > ul > li');
+        topItems.forEach(function(li) {
+          var subList = li.querySelector(':scope > ul');
+          if (!subList) return;
+
+          li.classList.add('sidebar-group');
+
+          var hasActive = li.querySelector('li.active') || li.classList.contains('active');
+          if (hasActive) {
+            li.classList.add('open');
+          } else {
+            li.classList.remove('open');
+          }
+
+          var trigger = li.querySelector(':scope > a, :scope > p');
+          if (trigger && !trigger._accordionBound) {
+            trigger._accordionBound = true;
+            trigger.addEventListener('click', function(e) {
+              var href = trigger.getAttribute('href');
+              if (!href || href === '#' || href.indexOf('#') === 0) {
+                e.preventDefault();
+              }
+              li.classList.toggle('open');
+            });
+          }
+        });
+      });
+    }
+
+    function codeHighlightPlugin(hook) {
+      hook.doneEach(function() {
+        if (typeof Prism === 'undefined') return;
+
+        document.querySelectorAll('.markdown-section pre').forEach(function(pre) {
+          var code = pre.querySelector('code');
+          if (!code) return;
+
+          var lang = pre.getAttribute('data-lang') || '';
+          if (!lang || lang === 'none' || lang === 'text') {
+            var txt = code.textContent.trim();
+            if (/^(\$\s|composer\s|php\s+artisan|npm\s|git\s)/m.test(txt)) {
+              lang = 'bash';
+            } else if (/^\s*[\{\[]/.test(txt) && /"\s*:/.test(txt)) {
+              lang = 'json';
+            } else if (/<\?php|\$[a-zA-Z_]|->|namespace\s+|use\s+[A-Z]/.test(txt)) {
+              lang = 'php';
+            } else if (/^\s*(SELECT|INSERT|UPDATE|DELETE|CREATE|ALTER)\b/i.test(txt)) {
+              lang = 'sql';
+            } else {
+              lang = 'php';
+            }
+            pre.setAttribute('data-lang', lang);
+            code.className = 'language-' + lang;
+          }
+
+          try {
+            Prism.highlightElement(code);
+          } catch (e) {}
+        });
+      });
+    }
+
     window.$docsify = {
       name: 'LaveroAdmin',
       repo: 'https://github.com/LaveroAdmin/LaveroAdmin',
       loadSidebar: true,
       loadNavbar: true,
+      alias: {
+        '/.*/_sidebar.md': '/_sidebar.md',
+        '/.*/_navbar.md': '/_navbar.md'
+      },
       coverpage: true,
       auto2top: true,
       maxLevel: 4,
@@ -823,25 +886,29 @@
         crossChapterText: true
       },
       copyCode: {
-        buttonText : 'Copy',
-        errorText  : 'Error',
+        buttonText: 'Copy',
+        errorText: 'Error',
         successText: 'Copied!'
       },
       plugins: [
-        alertPlugin
+        alertPlugin,
+        sidebarAccordionPlugin,
+        codeHighlightPlugin
       ]
     };
   </script>
 
   <!-- Docsify v4 -->
   <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
-  
+
   <!-- Plugins -->
   <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/docsify-copy-code/dist/docsify-copy-code.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/docsify-pagination/dist/docsify-pagination.min.js"></script>
 
-  <!-- Prism Syntax Highlighting -->
+  <!-- Prism Syntax Highlighting (ordered by dependency) -->
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-clike.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-markup.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-markup-templating.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-bash.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-php.min.js"></script>
