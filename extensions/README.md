@@ -35,31 +35,33 @@ LaveroAdmin features a rich, plug-and-play extension ecosystem. Extensions allow
 
 ## How to Install an Extension
 
-Installing an extension takes two simple steps:
+### Option A: Via Marketplace (Recommended)
 
-### 1. Require via Composer
+When you install an extension through **Marketplace** (`Admin -> Marketplace`), it **automatically**:
+1. Downloads and installs the package (via Composer or ZIP archive).
+2. Runs `php artisan migrate --force` to create extension database tables.
+3. Runs `php artisan admin:import <extension-name>` to register admin menu items and permissions.
+
+For most extensions, **no additional commands are needed** after Marketplace installation.
+
+### Option B: Via Composer CLI
 
 ```bash
 composer require laveroadmin/<extension-name>
-```
-
-For example, to install the Queue Manager:
-```bash
-composer require laveroadmin/queue-manager
-```
-
-### 2. Import Assets & Database
-
-Most extensions provide an import command to automatically publish static assets, create database tables, and register the menu item in the admin navigation:
-
-```bash
+php artisan migrate
 php artisan admin:import <extension-name>
 ```
 
-For example:
-```bash
-php artisan admin:import queue-manager
-```
+---
+
+## What Needs Manual Setup After Installation?
+
+| Setup Type | Extensions | What to Do After Marketplace Install |
+| :--- | :--- | :--- |
+| **Plug & Play (No extra steps)** | `cache-manager`, `config`, `forms`, `helpers`, `log-viewer`, `mail-log`, `marketplace`, `notifications`, `scheduling`, `translations` | Works immediately — open the new item in the admin sidebar. |
+| **One-time publish / Artisan step** | `backup`, `activity-log`, `media-manager`, `queue-manager`, `sessions` | `backup`: publish `spatie/laravel-backup` config; `activity-log`: publish Spatie migrations & `migrate`; `media-manager`: ensure `storage:link`; `queue-manager`: create `failed_jobs` / `job_batches` tables if missing; `sessions`: set `SESSION_DRIVER=database` for remote revocation. |
+| **Register Middleware / Handler** | `seo`, `wafu`, `reporter` | `seo`: append `RedirectMiddleware` to `web` middleware; `wafu`: append `WafuMiddleware` (optional `vendor:publish --tag=wafu-config`); `reporter`: call `Reporter::report($e)` in your exception handler. |
+| **Use in Forms / Grids / Blade** | `ckeditor`, `tiptap`, `grid-sortable`, `menus` | Call `$form->ckeditor('field')`, `$form->tiptap('field')`, `$grid->sortable()`, or `site_menu('header')` in your controllers/views. |
 
 ---
 
