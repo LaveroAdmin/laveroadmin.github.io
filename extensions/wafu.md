@@ -6,21 +6,19 @@ The WAFU Firewall extension provides comprehensive management for Web Applicatio
 
 ```bash
 composer require laveroadmin/wafu
-
 php artisan migrate
-```
-
-Then run the command to import the menu items and permissions:
-
-```bash
+php artisan vendor:publish --tag=wafu-config
 php artisan admin:import wafu
 ```
 
 ## Features
 
-- **Security Events (`wafu/events`)**: View and filter detected security events in real-time, inspect suspicious payloads, attack types (SQLi, XSS, Path Traversal, Bot scanners), and HTTP headers.
+- **Security Events (`wafu/events`)**: View and filter detected security events in real-time, inspect suspicious payloads, attack types (SQLi, XSS, Path Traversal, Bot scanners), and HTTP headers. Create **IP blocks**, **IP whitelists**, or **Route exclusions** directly from the events log or event detail page.
 - **Blocked IPs (`wafu/blocks`)**: Manage actively blocked IP addresses, view block expiration times, unblock IPs with a single click, or manually add IP blocks with custom durations and reasons.
-- **WAF Settings (`wafu/settings`)**: Configure firewall sensitivity, enable/disable specific inspection rules, set default blocking behavior, and manage trusted IP whitelists.
+- **WAF Settings (`wafu/settings`)**:
+  - Master switch, operating mode (`enforce` / `report`), trusted proxies, **IP Whitelist**, **Excluded Routes** (with `*` wildcards), **Ignored Input Fields**, and **Redacted Log Fields** (passwords and CSRF tokens are always excluded from inspection and masked as `[REDACTED]` in logs).
+  - Per-module rule configuration: enable/disable modules, set action (`block` 403 / `challenge` 429 / `log`), inspection targets (`query`, `body`, `cookies`, `uri`, `headers`), custom regex patterns, and numeric thresholds for Rate Limit and 404 Abuse.
+  - All settings are cached permanently via `Cache::rememberForever` and refreshed automatically when saved.
 - **Module Rules & Signatures Inspector**: Click "Rules" on any security module (SQLi, RCE, Path Traversal, IP Blocklist) to open an interactive modal with full rule definitions, regex patterns, inspection scopes, and attack payload examples.
 - **Quick IP Action**: One-click IP blocking/unblocking directly from security logs and grids via asynchronous row actions.
 
@@ -47,11 +45,13 @@ The Settings page (`admin/wafu/settings`) features security modules with a dedic
 
 ## Middleware Configuration
 
-To protect your application routes with WAFU Firewall, apply the `wafu.firewall` middleware to your route groups or global middleware stack:
+To protect your application routes with WAFU Firewall, attach `\LaveroAdmin\Admin\Wafu\Middleware\WafuFirewallMiddleware` (or alias `wafu.firewall`) in `bootstrap/app.php` or route groups:
 
 ```php
-// In routes/web.php or bootstrap/app.php
-Route::middleware(['web', 'wafu.firewall'])->group(function () {
-    // Protected routes
-});
+// bootstrap/app.php
+->withMiddleware(function (Middleware $middleware) {
+    $middleware->web(append: [
+        \LaveroAdmin\Admin\Wafu\Middleware\WafuFirewallMiddleware::class,
+    ]);
+})
 ```

@@ -1,44 +1,52 @@
-# Configuration management
+# Configuration Management
 
-This tool will store the configuration data in the database
-
-> **Preview:** *Config*
+Visual settings form and drag-and-drop **Form Builder** for managing dynamic application configuration stored in the database and cached permanently until changed.
 
 ## Installation
 
+```bash
+composer require laveroadmin/config
+php artisan migrate
+php artisan admin:import config
 ```
-$ composer require laveroadmin/config
 
-$ php artisan migrate
-```
+Open `app/Providers/AppServiceProvider.php` and call `Config::load()` inside `boot()`:
 
-Open `app/Providers/AppServiceProvider.php`, and call the `Config::load()` method within the `boot` method:
-
-```
+```php
 <?php
 
 namespace App\Providers;
 
-use LaveroAdmin\Admin\Config\Config;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
+use LaveroAdmin\Admin\Config\Config;
 
 class AppServiceProvider extends ServiceProvider
 {
-    public function boot()
+    public function boot(): void
     {
-        Config::load();  // Add this
+        if (Schema::hasTable(config('admin.extensions.config.table', 'admin_config'))) {
+            Config::load();
+        }
     }
 }
 ```
 
-Then run the command to import menus and permissions (which can also be added manually)
-
-```
-$ php artisan admin:import config
-```
-
 Open `http://localhost/admin/config`.
+
+## Features
+
+- **Settings Form (`/admin/config`)**: Clean tabbed form grouped by sections, with 1-click copy for `config('...')` keys.
+- **Visual Form Builder (`/admin/config/builder`)**:
+  - Create tabs and reorder fields via drag-and-drop (`SortableJS`).
+  - Configure field **type** (`text`, `textarea`, `number`, `email`, `url`, `password`, `switch`, `select`, `radio`, `checkbox`, `color`, `date`, `datetime`, `image`, `file`, `json`).
+  - Set `choices`, `placeholder`, `default`, `required`, `min`/`max`/`step`, `rows`, and help text.
+- **Forever Cache**: Settings are cached via `Cache::rememberForever` and automatically invalidated on save/delete.
 
 ## Usage
 
-After add config in the panel, use `config($key)` to get value you configured.
+After adding and saving a setting in the panel, read it anywhere in Laravel with:
+
+```php
+$siteTitle = config('site.title');
+```

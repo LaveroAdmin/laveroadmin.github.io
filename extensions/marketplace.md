@@ -28,9 +28,10 @@ Open `http://localhost/admin/marketplace`.
 - **Extensions Catalog**: Filter by category (*Tools*, *Content*, *System*, *Security*), repository source, or search by keywords.
 - **Installed Status**: Track installed versions of packages and identify missing extensions.
 - **Interactive Actions**:
-  - One-click Install and Update via Composer.
-  - Re-import assets and migrations (`admin:import`).
-  - Safe package uninstallation (`composer remove`).
+  - One-click Install, Update, and Remove via Composer CLI (when `proc_open` is available) **or** pure-PHP ZIP archive extraction (`storage/app/lavero-extensions`) on shared hosting without Composer.
+  - Upload `.zip` extension archives directly from the Marketplace UI.
+  - Automatic version comparison (`Update to vX.Y.Z` badge when a newer version is available).
+  - Re-import assets and migrations (`migrate --force` + `admin:import`).
   - Pre-installation compatibility alerts.
 - **Live Terminal Log**: View real-time console output during operations.
 - **Manual CLI Modal**: Copy pre-formatted terminal commands for environments with restricted execution rights.
